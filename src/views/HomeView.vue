@@ -93,7 +93,6 @@ export default {
     })
 
     const submitForm = () => {
-      // Aquí iría la lógica para enviar el formulario
       console.log('Formulario enviado:', formData.value)
       // Resetear el formulario después de enviar
       formData.value = {
@@ -133,15 +132,15 @@ html {
 /* Añade aquí estilos adicionales si es necesario */
 </style>
 <template>
-  <div class="font-sans text-gray-900 bg-white">
-    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+  <div class="font-sans text-gray-900 bg-gray-100">
+    <header class="fixed top-0 left-0 right-0 bg-blue-900 shadow-md z-50">
       <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="text-2xl font-bold text-gray-900">Edemtto</div>
+        <div class="text-2xl font-bold text-white">Edemtto</div>
         <ul class="flex space-x-6">
           <li v-for="section in sections" :key="section.id">
             <a
               :href="`#${section.id}`"
-              class="text-gray-700 hover:text-blue-600 transition duration-300"
+              class="text-gray-200 hover:text-yellow-400 transition duration-300"
               @click.prevent="scrollTo(section.id)"
             >
               {{ section.name }}
@@ -151,35 +150,42 @@ html {
       </nav>
     </header>
 
-    <main class="pt-20">
+    <main>
       <!-- Sección Hero -->
-      <section id="hero" class="bg-gray-100 py-20" v-scroll-animate="'animate-fadeIn'">
+      <section id="hero" class="bg-blue-900 text-white py-20" v-scroll-animate="'animate-fadeIn'">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-5xl font-bold mb-4">Edemtto</h1>
-          <p class="text-2xl text-gray-700">Mantenimiento industrial especializado</p>
+          <p class="text-2xl text-yellow-400">Mantenimiento industrial especializado</p>
         </div>
       </section>
 
       <!-- Sección Nosotros -->
-      <section id="nosotros" class="py-20" v-scroll-animate="'animate-slideUp'">
+      <section id="nosotros" class="py-20 bg-gray-100" v-scroll-animate="'animate-slideUp'">
         <div class="container mx-auto px-4">
-          <h2 class="text-3xl font-bold mb-8 text-center">Nosotros</h2>
+          <h2 class="text-3xl font-bold mb-8 text-center text-blue-900">Nosotros</h2>
           <p class="text-lg text-gray-700 max-w-3xl mx-auto">
-            Ingenieros en instrumentación y control con posgrado en mantenimiento industrial, 
-            contamos con 15 años de experiencia en la industria del plástico, especialmente 
-            en el área de mantenimiento.
+            Ingenieros en instrumentación y control con posgrado 
+            en mantenimiento industrial con 15 años de experiencia 
+            en la industria del plástico en especial en el área de 
+            mantenimiento, decidimos poner a disposición nuestro 
+            conocimiento y experiencia adquirida durante este 
+            tiempo para las diferentes empresas del sector, 
+            brindándoles una solución oportuna y en el menor 
+            tiempo posible porque entendemos (el valor costo 
+            oportunidad) que representa un equipo fuera de servicio.
+
           </p>
         </div>
       </section>
 
       <!-- Sección Servicios -->
-      <section id="servicios" class="bg-gray-100 py-20" v-scroll-animate="'animate-fadeIn'">
+      <section id="servicios" class="bg-white py-20" v-scroll-animate="'animate-fadeIn'">
         <div class="container mx-auto px-4">
-          <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Servicios</h2>
+          <h2 class="text-3xl font-bold mb-12 text-center text-blue-900">Nuestros Servicios</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="service in services" :key="service.title" class="bg-white rounded-lg shadow-md p-6 transition duration-300 transform hover:scale-105">
+            <div v-for="service in services" :key="service.title" class="bg-gray-100 rounded-lg shadow-md p-6 transition duration-300 transform hover:scale-105">
               <img :src="service.image" :alt="service.title" class="w-16 h-16 mx-auto mb-4">
-              <h3 class="text-xl font-semibold mb-2">{{ service.title }}</h3>
+              <h3 class="text-xl font-semibold mb-2 text-blue-900">{{ service.title }}</h3>
               <ul class="text-gray-700">
                 <li v-for="item in service.items" :key="item" class="mb-1">{{ item }}</li>
               </ul>
@@ -189,9 +195,9 @@ html {
       </section>
 
       <!-- Sección Equipos -->
-      <section id="equipos" class="py-20" v-scroll-animate="'animate-fadeIn'">
+      <section id="equipos" class="py-20 bg-gray-100" v-scroll-animate="'animate-fadeIn'">
         <div class="container mx-auto px-4">
-          <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Equipos</h2>
+          <h2 class="text-3xl font-bold mb-12 text-center text-blue-900">Nuestros Equipos</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div
               v-for="equipo in equipos"
@@ -200,7 +206,7 @@ html {
               v-scroll-animate="'animate-slideUp'"
             >
               <img :src="equipo.image" :alt="equipo.name" class="w-32 h-32 mx-auto mb-4 object-contain">
-              <h3 class="text-lg font-semibold mb-2 text-center">{{ equipo.name }}</h3>
+              <h3 class="text-lg font-semibold mb-2 text-blue-900 text-center">{{ equipo.name }}</h3>
               <p class="text-gray-700 text-sm text-center">{{ equipo.description }}</p>
             </div>
           </div>
@@ -208,28 +214,28 @@ html {
       </section>
 
       <!-- Sección Contacto -->
-      <section id="contacto" class="bg-gray-100 py-20" v-scroll-animate="'animate-fadeIn'">
+      <section id="contacto" class="bg-blue-900 text-white py-20" v-scroll-animate="'animate-fadeIn'">
         <div class="container mx-auto px-4">
           <h2 class="text-3xl font-bold mb-12 text-center">Contacto</h2>
           <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
             <form @submit.prevent="submitForm" class="space-y-4">
               <div>
                 <label for="nombre" class="block text-gray-700 mb-2">Nombre</label>
-                <input type="text" id="nombre" v-model="formData.nombre" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="nombre" v-model="formData.nombre" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
               </div>
               <div>
                 <label for="correo" class="block text-gray-700 mb-2">Correo</label>
-                <input type="email" id="correo" v-model="formData.correo" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="email" id="correo" v-model="formData.correo" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
               </div>
               <div>
                 <label for="telefono" class="block text-gray-700 mb-2">Teléfono</label>
-                <input type="tel" id="telefono" v-model="formData.telefono" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="tel" id="telefono" v-model="formData.telefono" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
               </div>
               <div>
                 <label for="mensaje" class="block text-gray-700 mb-2">Mensaje</label>
-                <textarea id="mensaje" v-model="formData.mensaje" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4"></textarea>
+                <textarea id="mensaje" v-model="formData.mensaje" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" rows="4"></textarea>
               </div>
-              <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Enviar</button>
+              <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-yellow-400 transition duration-300">Enviar</button>
             </form>
           </div>
         </div>
@@ -237,4 +243,5 @@ html {
     </main>
   </div>
 </template>
+
 
