@@ -1,4 +1,6 @@
 <script>
+import emailjs from '@emailjs/browser';
+
 export default {
     name: "Contact",
     data() {
@@ -28,7 +30,9 @@ export default {
                 { name: 'Instalaciones y/o Adecuaciones' },
                 { name: 'Automatizaciones' }
             ],
-            phoneNumber: '3197139235'
+            phoneNumber: '3197139235',
+            isLoading: false,
+            emailError: ''
         };
     },
     computed: {
@@ -105,28 +109,56 @@ export default {
                    `*Servicio solicitado:* ${this.formData.servicio}%0A` +
                    `*Detalles adicionales:* ${this.formData.mensaje}`;
         },
-        submitForm() {
+        async submitForm() {
             if (this.isValidForm) {
-                // Crear el enlace de WhatsApp
-                const message = this.formatWhatsAppMessage();
-                const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${message}`;
-                
-                // Redirigir a WhatsApp
-                window.open(whatsappUrl, '_blank');
-                
-                // Limpiar el formulario
-                this.formData = {
-                    nombre: '',
-                    correo: '',
-                    servicio: '',
-                    mensaje: '',
-                };
-                this.touched = {
-                    nombre: false,
-                    correo: false,
-                    servicio: false,
-                    mensaje: false,
-                };
+                this.isLoading = true;
+                this.emailError = '';
+
+                try {
+                    // Enviar correo electrónico
+                    const templateParams = {
+                        from_name: this.formData.nombre,
+                        from_email: this.formData.correo,
+                        service: this.formData.servicio,
+                        message: this.formData.mensaje,
+                        to_name: 'Administrador'
+                    };
+
+                    await emailjs.send(
+                        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                        templateParams,
+                        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                    );
+
+                    // Crear el enlace de WhatsApp
+                    const message = this.formatWhatsAppMessage();
+                    const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${message}`;
+                    
+                    // Redirigir a WhatsApp
+                    window.open(whatsappUrl, '_blank');
+                    
+                    // Limpiar el formulario
+                    this.formData = {
+                        nombre: '',
+                        correo: '',
+                        servicio: '',
+                        mensaje: '',
+                    };
+                    this.touched = {
+                        nombre: false,
+                        correo: false,
+                        servicio: false,
+                        mensaje: false,
+                    };
+
+                    alert('¡Mensaje enviado con éxito!');
+                } catch (error) {
+                    this.emailError = 'Hubo un error al enviar el correo electrónico';
+                    console.error('Error:', error);
+                } finally {
+                    this.isLoading = false;
+                }
             }
         }
     }
@@ -215,15 +247,16 @@ export default {
                         </div>
                         <button 
                             type="submit" 
-                            :disabled="!isValidForm"
+                            :disabled="!isValidForm || isLoading"
                             :class="{
-                                'bg-gray-400': !isValidForm,
-                                'bg-blue-900 hover:bg-yellow-400': isValidForm
+                                'bg-gray-400': !isValidForm || isLoading,
+                                'bg-blue-900 hover:bg-yellow-400': isValidForm && !isLoading
                             }"
                             class="w-full text-white py-2 px-4 rounded-md transition duration-300"
                         >
-                            Enviar
+                            {{ isLoading ? 'Enviando...' : 'Enviar' }}
                         </button>
+                        <p v-if="emailError" class="text-red-500 text-sm mt-2">{{ emailError }}</p>
                     </form>
                 </div>
             </div>
