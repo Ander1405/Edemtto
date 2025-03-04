@@ -73,7 +73,7 @@ export default {
             <div class="relative">
                 <button
                     @click="scrollLeft"
-                    class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-900 bg-opacity-30 text-white px-3 py-2 rounded-full shadow-md z-10"
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white px-3 py-2 rounded-full shadow-md z-10 md:hidden"
                 >
                     ◀
                 </button>
@@ -99,7 +99,7 @@ export default {
 
                 <button
                     @click="scrollRight"
-                    class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-900 bg-opacity-30 text-white px-3 py-2 rounded-full shadow-md z-10"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-900 text-white px-3 py-2 rounded-full shadow-md z-10 md:hidden"
                 >
                     ▶
                 </button>

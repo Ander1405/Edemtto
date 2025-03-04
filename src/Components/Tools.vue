@@ -46,7 +46,7 @@ export default {
             <div class="relative w-full flex items-center">
                 <button
                     @click="scrollLeft"
-                    class="absolute left-0 px-4 py-2 bg-blue-900 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300 z-10"
+                    class="absolute left-0 px-4 py-2 bg-blue-900 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300 z-10 md:hidden"
                 >
                     ◀
                 </button>
@@ -77,7 +77,7 @@ export default {
 
                 <button
                     @click="scrollRight"
-                    class="absolute right-0 px-4 py-2 bg-blue-900 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300 z-10"
+                    class="absolute right-0 px-4 py-2 bg-blue-900 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300 z-10 md:hidden"
                 >
                     ▶
                 </button>
