@@ -6,20 +6,128 @@ export default {
             formData: {
                 nombre: '',
                 correo: '',
-                telefono: '',
+                servicio: '',
                 mensaje: '',
-            }
-        };
-    },
-    methods: {
-        submitForm() {
-            console.log('Formulario enviado:', this.formData);
-            this.formData = {
+            },
+            errors: {
                 nombre: '',
                 correo: '',
-                telefono: '',
+                servicio: '',
                 mensaje: '',
-            };
+            },
+            touched: {
+                nombre: false,
+                correo: false,
+                servicio: false,
+                mensaje: false,
+            },
+            services: [
+                { name: 'Mantenimiento Correctivo' },
+                { name: 'Mantenimiento Preventivo' },
+                { name: 'Mantenimiento Predictivo' },
+                { name: 'Instalaciones y/o Adecuaciones' },
+                { name: 'Automatizaciones' }
+            ],
+            phoneNumber: '3197139235'
+        };
+    },
+    computed: {
+        isValidForm() {
+            return this.isValidNombre && 
+                   this.isValidCorreo && 
+                   this.isValidServicio &&
+                   this.isValidMensaje &&
+                   Object.values(this.touched).every(field => field);
+        },
+        isValidNombre() {
+            return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(this.formData.nombre) && this.formData.nombre.length > 0;
+        },
+        isValidCorreo() {
+            return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(this.formData.correo);
+        },
+        isValidServicio() {
+            return this.services.some(service => service.name === this.formData.servicio);
+        },
+        isValidMensaje() {
+            return /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,]+$/.test(this.formData.mensaje) && this.formData.mensaje.length > 0;
+        }
+    },
+    methods: {
+        validateField(field) {
+            this.touched[field] = true;
+            
+            switch(field) {
+                case 'nombre':
+                    if (!this.formData.nombre) {
+                        this.errors.nombre = 'El nombre es requerido';
+                    } else if (!this.isValidNombre) {
+                        this.errors.nombre = 'El nombre solo puede contener letras';
+                    } else {
+                        this.errors.nombre = '';
+                    }
+                    break;
+                
+                case 'correo':
+                    if (!this.formData.correo) {
+                        this.errors.correo = 'El correo es requerido';
+                    } else if (!this.isValidCorreo) {
+                        this.errors.correo = 'Ingrese un correo válido';
+                    } else {
+                        this.errors.correo = '';
+                    }
+                    break;
+                
+                case 'servicio':
+                    if (!this.formData.servicio) {
+                        this.errors.servicio = 'Debe seleccionar un servicio';
+                    } else if (!this.isValidServicio) {
+                        this.errors.servicio = 'Seleccione un servicio válido';
+                    } else {
+                        this.errors.servicio = '';
+                    }
+                    break;
+                
+                case 'mensaje':
+                    if (!this.formData.mensaje) {
+                        this.errors.mensaje = 'El mensaje es requerido';
+                    } else if (!this.isValidMensaje) {
+                        this.errors.mensaje = 'El mensaje solo puede contener letras y números';
+                    } else {
+                        this.errors.mensaje = '';
+                    }
+                    break;
+            }
+        },
+        formatWhatsAppMessage() {
+            return `*Nueva solicitud de servicio desde el formulario web*%0A%0A` +
+                   `*Nombre:* ${this.formData.nombre}%0A` +
+                   `*Correo:* ${this.formData.correo}%0A` +
+                   `*Servicio solicitado:* ${this.formData.servicio}%0A` +
+                   `*Detalles adicionales:* ${this.formData.mensaje}`;
+        },
+        submitForm() {
+            if (this.isValidForm) {
+                // Crear el enlace de WhatsApp
+                const message = this.formatWhatsAppMessage();
+                const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${message}`;
+                
+                // Redirigir a WhatsApp
+                window.open(whatsappUrl, '_blank');
+                
+                // Limpiar el formulario
+                this.formData = {
+                    nombre: '',
+                    correo: '',
+                    servicio: '',
+                    mensaje: '',
+                };
+                this.touched = {
+                    nombre: false,
+                    correo: false,
+                    servicio: false,
+                    mensaje: false,
+                };
+            }
         }
     }
 };
@@ -29,26 +137,95 @@ export default {
     <section id="contacto" class="bg-blue-900 text-white py-20" v-scroll-animate="'animate-fadeIn'">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center">Contacto</h2>
-            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
-                <form @submit.prevent="submitForm" class="space-y-4">
-                    <div>
-                        <label for="nombre" class="block text-gray-700 mb-2">Nombre</label>
-                        <input type="text" id="nombre" v-model="formData.nombre" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- Columna izquierda con descripción -->
+                <div class="space-y-4 md:pt-0">
+                    <h3 class="text-2xl font-semibold">¿Tienes alguna pregunta?</h3>
+                    <p class="text-lg">
+                        Estamos aquí para ayudarte. Completa el formulario y nos pondremos en contacto contigo lo antes posible. Tu consulta es importante para nosotros y nos comprometemos a darte una respuesta rápida y efectiva.
+                    </p>
+                    <div class="space-y-2 mt-8">
+                        <p class="flex items-center">
+                            <span class="mr-2">📧</span> info@tuempresa.com
+                        </p>
+                        <p class="flex items-center">
+                            <span class="mr-2">📱</span> +34 123 456 789
+                        </p>
                     </div>
-                    <div>
-                        <label for="correo" class="block text-gray-700 mb-2">Correo</label>
-                        <input type="email" id="correo" v-model="formData.correo" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                    </div>
-                    <div>
-                        <label for="telefono" class="block text-gray-700 mb-2">Teléfono</label>
-                        <input type="tel" id="telefono" v-model="formData.telefono" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                    </div>
-                    <div>
-                        <label for="mensaje" class="block text-gray-700 mb-2">Mensaje</label>
-                        <textarea id="mensaje" v-model="formData.mensaje" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" rows="4"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-yellow-400 transition duration-300">Enviar</button>
-                </form>
+                </div>
+                
+                <!-- Columna derecha con el formulario -->
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <form @submit.prevent="submitForm" class="space-y-4">
+                        <div>
+                            <label for="nombre" class="block text-gray-700 mb-2">Nombre</label>
+                            <input 
+                                type="text" 
+                                id="nombre" 
+                                v-model="formData.nombre" 
+                                @blur="validateField('nombre')"
+                                :class="{'border-red-500': errors.nombre}"
+                                required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                            >
+                            <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
+                        </div>
+                        <div>
+                            <label for="correo" class="block text-gray-700 mb-2">Correo</label>
+                            <input 
+                                type="email" 
+                                id="correo" 
+                                v-model="formData.correo" 
+                                @blur="validateField('correo')"
+                                :class="{'border-red-500': errors.correo}"
+                                required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                            >
+                            <p v-if="errors.correo" class="text-red-500 text-sm mt-1">{{ errors.correo }}</p>
+                        </div>
+                        <div>
+                            <label for="servicio" class="block text-gray-700 mb-2">Servicio</label>
+                            <select 
+                                id="servicio" 
+                                v-model="formData.servicio" 
+                                @blur="validateField('servicio')"
+                                :class="{'border-red-500': errors.servicio}"
+                                required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                            >
+                                <option selected disabled value="">Seleccione un servicio</option>
+                                <option v-for="service in services" :key="service.name" :value="service.name">
+                                    {{ service.name }}
+                                </option>
+                            </select>
+                            <p v-if="errors.servicio" class="text-red-500 text-sm mt-1">{{ errors.servicio }}</p>
+                        </div>
+                        <div>
+                            <label for="mensaje" class="block text-gray-700 mb-2">Detalles adicionales</label>
+                            <textarea 
+                                id="mensaje" 
+                                v-model="formData.mensaje" 
+                                @blur="validateField('mensaje')"
+                                :class="{'border-red-500': errors.mensaje}"
+                                required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900" 
+                                rows="4"
+                            ></textarea>
+                            <p v-if="errors.mensaje" class="text-red-500 text-sm mt-1">{{ errors.mensaje }}</p>
+                        </div>
+                        <button 
+                            type="submit" 
+                            :disabled="!isValidForm"
+                            :class="{
+                                'bg-gray-400': !isValidForm,
+                                'bg-blue-900 hover:bg-yellow-400': isValidForm
+                            }"
+                            class="w-full text-white py-2 px-4 rounded-md transition duration-300"
+                        >
+                            Enviar
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
