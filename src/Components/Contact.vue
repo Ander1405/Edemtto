@@ -10,18 +10,21 @@ export default {
                 correo: '',
                 servicio: '',
                 mensaje: '',
+                metodosContacto: [],
             },
             errors: {
                 nombre: '',
                 correo: '',
                 servicio: '',
                 mensaje: '',
+                metodosContacto: '',
             },
             touched: {
                 nombre: false,
                 correo: false,
                 servicio: false,
                 mensaje: false,
+                metodosContacto: false,
             },
             services: [
                 { name: 'Mantenimiento Correctivo' },
@@ -32,7 +35,11 @@ export default {
             ],
             phoneNumber: '3197139235',
             isLoading: false,
-            emailError: ''
+            emailError: '',
+            metodosContactoDisponibles: [
+                { id: 'email', name: 'Correo Electrónico' },
+                { id: 'whatsapp', name: 'WhatsApp' }
+            ],
         };
     },
     computed: {
@@ -41,6 +48,7 @@ export default {
                    this.isValidCorreo && 
                    this.isValidServicio &&
                    this.isValidMensaje &&
+                   this.isValidMetodosContacto &&
                    Object.values(this.touched).every(field => field);
         },
         isValidNombre() {
@@ -54,6 +62,9 @@ export default {
         },
         isValidMensaje() {
             return /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,]+$/.test(this.formData.mensaje) && this.formData.mensaje.length > 0;
+        },
+        isValidMetodosContacto() {
+            return this.formData.metodosContacto.length > 0;
         }
     },
     methods: {
@@ -100,6 +111,14 @@ export default {
                         this.errors.mensaje = '';
                     }
                     break;
+                
+                case 'metodosContacto':
+                    if (this.formData.metodosContacto.length === 0) {
+                        this.errors.metodosContacto = 'Debe seleccionar al menos un método de contacto';
+                    } else {
+                        this.errors.metodosContacto = '';
+                    }
+                    break;
             }
         },
         formatWhatsAppMessage() {
@@ -115,46 +134,54 @@ export default {
                 this.emailError = '';
 
                 try {
-                    // Enviar correo electrónico
-                    const templateParams = {
-                        from_name: this.formData.nombre,
-                        from_email: this.formData.correo,
-                        service: this.formData.servicio,
-                        message: this.formData.mensaje,
-                        to_name: 'Administrador'
-                    };
+                    const promises = [];
 
-                    await emailjs.send(
-                        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                        templateParams,
-                        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-                    );
+                    if (this.formData.metodosContacto.includes('email')) {
+                        const templateParams = {
+                            from_name: this.formData.nombre,
+                            from_email: this.formData.correo,
+                            service: this.formData.servicio,
+                            message: this.formData.mensaje,
+                            to_name: 'Administrador'
+                        };
 
-                    // Crear el enlace de WhatsApp
-                    const message = this.formatWhatsAppMessage();
-                    const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${message}`;
-                    
-                    // Redirigir a WhatsApp
-                    window.open(whatsappUrl, '_blank');
-                    
+                        promises.push(
+                            emailjs.send(
+                                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                                templateParams,
+                                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                            )
+                        );
+                    }
+
+                    if (this.formData.metodosContacto.includes('whatsapp')) {
+                        const message = this.formatWhatsAppMessage();
+                        const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${message}`;
+                        window.open(whatsappUrl, '_blank');
+                    }
+
+                    await Promise.all(promises);
+
                     // Limpiar el formulario
                     this.formData = {
                         nombre: '',
                         correo: '',
                         servicio: '',
                         mensaje: '',
+                        metodosContacto: [],
                     };
                     this.touched = {
                         nombre: false,
                         correo: false,
                         servicio: false,
                         mensaje: false,
+                        metodosContacto: false,
                     };
 
                     alert('¡Mensaje enviado con éxito!');
                 } catch (error) {
-                    this.emailError = 'Hubo un error al enviar el correo electrónico';
+                    this.emailError = 'Hubo un error al enviar el mensaje';
                     console.error('Error:', error);
                 } finally {
                     this.isLoading = false;
@@ -198,7 +225,7 @@ export default {
                                 @blur="validateField('nombre')"
                                 :class="{'border-red-500': errors.nombre}"
                                 required 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300 text-gray-900"
                             >
                             <p v-if="errors.nombre" class="text-red-500 text-sm mt-1">{{ errors.nombre }}</p>
                         </div>
@@ -211,7 +238,7 @@ export default {
                                 @blur="validateField('correo')"
                                 :class="{'border-red-500': errors.correo}"
                                 required 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300 text-gray-900"
                             >
                             <p v-if="errors.correo" class="text-red-500 text-sm mt-1">{{ errors.correo }}</p>
                         </div>
@@ -223,7 +250,7 @@ export default {
                                 @blur="validateField('servicio')"
                                 :class="{'border-red-500': errors.servicio}"
                                 required 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300 text-gray-900"
                             >
                                 <option selected disabled value="">Seleccione un servicio</option>
                                 <option v-for="service in services" :key="service.name" :value="service.name">
@@ -240,17 +267,37 @@ export default {
                                 @blur="validateField('mensaje')"
                                 :class="{'border-red-500': errors.mensaje}"
                                 required 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-900" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300 text-gray-900" 
                                 rows="4"
                             ></textarea>
                             <p v-if="errors.mensaje" class="text-red-500 text-sm mt-1">{{ errors.mensaje }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Métodos de contacto</label>
+                            <div class="space-y-2">
+                                <div v-for="metodo in metodosContactoDisponibles" :key="metodo.id" 
+                                    class="flex items-center">
+                                    <input 
+                                        type="checkbox" 
+                                        :id="metodo.id" 
+                                        v-model="formData.metodosContacto" 
+                                        :value="metodo.id"
+                                        @change="validateField('metodosContacto')"
+                                        class="h-4 w-4 text-orange-400 focus:ring-orange-300 border-gray-300 rounded"
+                                    >
+                                    <label :for="metodo.id" class="ml-2 block text-gray-700">
+                                        {{ metodo.name }}
+                                    </label>
+                                </div>
+                            </div>
+                            <p v-if="errors.metodosContacto" class="text-red-500 text-sm mt-1">{{ errors.metodosContacto }}</p>
                         </div>
                         <button 
                             type="submit" 
                             :disabled="!isValidForm || isLoading"
                             :class="{
                                 'bg-gray-400': !isValidForm || isLoading,
-                                'bg-blue-900 hover:bg-yellow-400': isValidForm && !isLoading
+                                'bg-blue-900 hover:bg-orange-500': isValidForm && !isLoading
                             }"
                             class="w-full text-white py-2 px-4 rounded-md transition duration-300"
                         >
