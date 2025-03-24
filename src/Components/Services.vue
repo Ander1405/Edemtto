@@ -6,7 +6,7 @@ export default {
             services: [
                 {
                     title: 'Mantenimiento Correctivo',
-                    image: '/placeholder.svg?height=64&width=64',
+                    image: '/src/Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Servicios de correctivos por hora',
                         'Contrato para la ejecución de correctivos',
@@ -16,7 +16,7 @@ export default {
                 },
                 {
                     title: 'Mantenimiento Preventivo',
-                    image: '/placeholder.svg?height=64&width=64',
+                    image: '/src/Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Implementar planes de mantenimiento específicos',
                         'Contrato para la ejecución de mantenimientos preventivos',
@@ -26,7 +26,7 @@ export default {
                 },
                 {
                     title: 'Mantenimiento Predictivo',
-                    image: '/placeholder.svg?height=64&width=64',
+                    image: '/src/Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Termografía',
                         'Medición y consumos energía',
@@ -36,7 +36,7 @@ export default {
                 },
                 {
                     title: 'Instalaciones y/o Adecuaciones',
-                    image: '/placeholder.svg?height=64&width=64',
+                    image: '/src/Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Eléctricas, neumáticas e hidráulicas',
                         'Pruebas de cargabilidad en ML',
@@ -46,7 +46,7 @@ export default {
                 },
                 {
                     title: 'Automatizaciones',
-                    image: '/placeholder.svg?height=64&width=64',
+                    image: '/src/Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Venta de robots cartesianos y programación',
                         'Diseño de bandas transportadoras a medida',
