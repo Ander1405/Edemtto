@@ -6,7 +6,7 @@ export default {
             services: [
                 {
                     title: 'Mantenimiento Correctivo',
-                    image: '/src/Images/mantenimiento-predictivo.jpg',
+                    image: 'Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Servicios de correctivos por hora',
                         'Contrato para la ejecución de correctivos',
@@ -16,7 +16,7 @@ export default {
                 },
                 {
                     title: 'Mantenimiento Preventivo',
-                    image: '/src/Images/mantenimiento-predictivo.jpg',
+                    image: 'Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Implementar planes de mantenimiento específicos',
                         'Contrato para la ejecución de mantenimientos preventivos',
@@ -26,7 +26,7 @@ export default {
                 },
                 {
                     title: 'Mantenimiento Predictivo',
-                    image: '/src/Images/mantenimiento-predictivo.jpg',
+                    image: 'Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Termografía',
                         'Medición y consumos energía',
@@ -36,7 +36,7 @@ export default {
                 },
                 {
                     title: 'Instalaciones y/o Adecuaciones',
-                    image: '/src/Images/mantenimiento-predictivo.jpg',
+                    image: 'Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Eléctricas, neumáticas e hidráulicas',
                         'Pruebas de cargabilidad en ML',
@@ -46,7 +46,7 @@ export default {
                 },
                 {
                     title: 'Automatizaciones',
-                    image: '/src/Images/mantenimiento-predictivo.jpg',
+                    image: 'Images/mantenimiento-predictivo.jpg',
                     items: [
                         'Venta de robots cartesianos y programación',
                         'Diseño de bandas transportadoras a medida',
@@ -86,14 +86,19 @@ export default {
                     <div
                         v-for="service in services"
                         :key="service.title"
-                        class="bg-gray-100 rounded-lg shadow-md p-6 transition duration-300 transform hover:scale-105
-                               flex-shrink-0 md:flex-shrink w-80 md:w-auto max-w-xs md:max-w-full overflow-hidden text-wrap break-words"
+                        class="bg-gray-100 rounded-lg shadow-md overflow-hidden transition duration-300 transform hover:scale-105
+                               flex-shrink-0 md:flex-shrink w-72 md:w-auto max-w-xs md:max-w-full"
                     >
-                        <img :src="service.image" :alt="service.title" class="w-16 h-16 mx-auto mb-4">
-                        <h3 class="text-xl font-semibold mb-2 text-blue-900">{{ service.title }}</h3>
-                        <ul class="text-gray-700 text-sm break-words">
-                            <li v-for="item in service.items" :key="item" class="mb-1">{{ item }}</li>
-                        </ul>
+                        <img :src="service.image" :alt="service.title" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-2 text-blue-900">{{ service.title }}</h3>
+                            <ul class="text-gray-700 text-sm">
+                                <li v-for="item in service.items" :key="item" class="mb-2 flex items-center">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    {{ item }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 

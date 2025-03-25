@@ -6,22 +6,22 @@ export default {
             equipos: [
                 {
                     name: 'Pinza Fluke 376 FC',
-                    image: '/placeholder.svg?height=128&width=128',
+                    image: '/Images/tools/pinza-flake.webp',
                     description: 'Medición precisa de corriente y voltaje',
                 },
                 {
                     name: 'Medidor de Aislamiento Hioki',
-                    image: '/placeholder.svg?height=128&width=128',
+                    image: '/Images/tools/hioki.jpg',
                     description: 'Evaluación de la integridad del aislamiento eléctrico',
                 },
                 {
                     name: 'Analizador de Redes Algodue UPM 309',
-                    image: '/placeholder.svg?height=128&width=128',
+                    image: '/Images/tools/UPM.jpg',
                     description: 'Análisis completo de la calidad de energía',
                 },
                 {
                     name: 'Cámara Termográfica FLIR C5',
-                    image: '/placeholder.svg?height=128&width=128',
+                    image: '/Images/tools/FLIRC5.jpg',
                     description: 'Detección de problemas térmicos en equipos',
                 },
             ]
