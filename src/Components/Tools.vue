@@ -59,16 +59,18 @@ export default {
                     <div
                         v-for="equipo in equipos"
                         :key="equipo.name"
-                        class="bg-white rounded-lg shadow-md p-6 transition duration-300 transform hover:scale-105
-                               flex-shrink-0 md:flex-shrink w-80 md:w-auto max-w-xs md:max-w-full overflow-hidden"
+                        class="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 transform hover:scale-105
+                               flex-shrink-0 md:flex-shrink w-80 md:w-auto max-w-xs md:max-w-full"
                         v-scroll-animate="'animate-slideUp'"
                     >
-                        <img
-                            :src="equipo.image"
-                            :alt="equipo.name"
-                            class="w-32 h-32 mx-auto mb-4 object-contain"
-                        />
-                        <div class="text-center">
+                        <div class="w-full">
+                            <img
+                                :src="equipo.image"
+                                :alt="equipo.name"
+                                class="w-full h-48 object-cover"
+                            />
+                        </div>
+                        <div class="p-6 text-center">
                             <h3 class="text-lg font-semibold mb-2 text-blue-900 break-words">{{ equipo.name }}</h3>
                             <p class="text-gray-700 text-sm break-words text-wrap overflow-hidden">{{ equipo.description }}</p>
                         </div>
